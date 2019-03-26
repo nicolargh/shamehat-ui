@@ -1,5 +1,20 @@
+html, body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
 .App {
-  text-align: center;
+  height: 100%;
+  display: table;
+  table-layout: fixed;
+}
+
+.heading {
+  font-size: calc(10px + 5vmin);
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -30,4 +45,15 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.section {
+    text-align: center;
+    display: table-row;
+}
+
+.span {
+    height: 100%;
+    display: table-cell;
+  vertical-align: middle;
 }
