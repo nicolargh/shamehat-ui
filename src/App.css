@@ -4,7 +4,8 @@
 }
 
 .section {
-    text-align: center;
+  min-width: 50vh;
+  padding: 0vh 5vh;
 }
 
 /**********************************/

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import './css/bootstrap.css';
 import './css/bootstrap-grid.css';
@@ -36,16 +35,19 @@ class App extends Component {
   }
 
   render() {
-
     return (
         <div class="container">
           <div class="heading p-5">
             You've been shamehatted!
           </div>
-          {this.state.alias === null && <Receiver />}
-          {this.state.alias === null && <Giver /> }
           {this.state.alias === null && 
-            <Button value="Submit shamehat" onClick={() => this.handleSubmit() } />
+            <div class="row">
+              <div class="column section"><Receiver /></div>
+              <div class="column section"><Giver /></div>
+            </div>
+          }
+          {this.state.alias === null && 
+            <div class="p-4"><Button value="Submit shamehat" onClick={() => this.handleSubmit() } /></div>
           }
           {this.state.alias &&
             <div class="alert alert-primary" role="alert">

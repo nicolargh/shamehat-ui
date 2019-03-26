@@ -1,17 +1,16 @@
 import React from 'react';
 
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
+
 function Giver(props) {
   return (
     <form>
-      <div class="form-group">
-        <div class="form-group row">
-          <label for="inputPassword" class="col-sm-4 col-form-label text-right">Enter your alias for credit:</label>
-          <div class="col-sm-6">
-            <input id="giver-alias" class="form-control" type="text" placeholder="Your Microsoft alias" />
-            <small id="emailHelp" class="form-text text-muted text-left">Leave blank to remain anonymous</small>
-          </div>
-        </div>
-      </div>
+      <TextField
+        id="giver-alias"
+        label="Enter your name (for credit)" 
+        placeholder="Mr. Shamehat policeman" 
+        description="Leave blank to remain anonymous"
+      />
     </form>
   );  
 }
