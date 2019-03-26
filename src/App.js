@@ -3,6 +3,8 @@ import './App.css';
 import './css/bootstrap.css';
 import './css/bootstrap-grid.css';
 
+import axios from 'axios'
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import Giver from './Giver.js'
 import Receiver from './Receiver.js'
 import Button from './Button.js'
@@ -13,12 +15,19 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      alias: null,
+      giver: null,
       receiver: null,
       time: null
     };
   }
 
+  updateState(giver, receiver) {
+    this.setState({
+      giver: giver,
+      receiver: receiver,
+      time: Math.floor((new Date()).getTime() / 1000)
+    })  
+  }
 
   handleSubmit() {
     var giver = document.getElementById("giver-alias").value;
@@ -27,16 +36,11 @@ class App extends Component {
       giver = "anonymous"
     }
 
-    
-
-    this.setState({
-      alias: giver,
-      receiver: receiver,
-      time: Math.floor((new Date()).getTime() / 1000)
-    })
-  }
-
-  handleLeaderboard() {
+    axios.get('/user', {
+      params: {
+        token: receiverToken
+      }
+    }).then(json => this.updateState(giver, json.data.full_name))
 
   }
 
@@ -66,21 +70,27 @@ class App extends Component {
           <div class="heading p-5">
             You've been shamehatted!
           </div>
-          {this.state.alias === null && 
+          {this.state.giver === null && 
             <div class="row">
               <div class="column section"><Receiver /></div>
               <div class="column section"><Giver /></div>
             </div>
           }
-          {this.state.alias === null && 
+          {this.state.giver === null && 
             <div class="p-4"><Button value="Submit shamehat" onClick={() => this.handleSubmit() } /></div>
           }
-          {this.state.alias &&
-            <div class="alert alert-primary" role="alert">
-              Submitted shamehat for {this.state.receiver} by {this.state.alias} at {this.state.time}!
-            </div>
+          {this.state.giver && this.state.receiver === null &&
+            <MessageBar messageBarType={MessageBarType.warning} isMultiline={false}>
+              Could not authenticate user. Shamehat not submitted!
+            </MessageBar>
           }
-          <div class="row">
+          {this.state.giver && this.state.receiver && 
+            <MessageBar messageBarType={MessageBarType.success} isMultiline={false}>
+              Submitted shamehat for {this.state.receiver} by {this.state.alias} at {this.state.time}!
+            </MessageBar>
+          }
+
+          <div class="row p-4">
             <div class="column section">
               <large>Top Shamehat Wearers</large>
               <ReceiverTable data={receiverData}/>
@@ -90,6 +100,7 @@ class App extends Component {
               <GiverTable data={giverData}/>
             </div>
           </div>
+          <p />
         </div> 
     );
   }
