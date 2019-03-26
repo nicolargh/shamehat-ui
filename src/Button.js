@@ -1,14 +1,14 @@
 import React from 'react';
 
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+
 function Button(props) {
   return (
-      <button 
-        type="button" 
-        class="btn btn-primary"
+      <DefaultButton
         onClick={props.onClick}
       >
         {props.value}
-      </button>
+      </DefaultButton>
   );  
 }
 

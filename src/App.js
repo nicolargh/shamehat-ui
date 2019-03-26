@@ -5,24 +5,29 @@ import './css/bootstrap.css';
 import './css/bootstrap-grid.css';
 
 import Giver from './Giver.js'
+import Receiver from './Receiver.js'
 import Button from './Button.js'
+// import Table from './Table.js'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      alias: null
+      alias: null,
+      receiver: null
     };
   }
 
 
   handleSubmit() {
-    var nameValue = document.getElementById("alias").value;
-    if (!nameValue) {
-      nameValue = "anonymous"
+    var giver = document.getElementById("giver-alias").value;
+    var receiver = document.getElementById("receiver-auth").value;
+    if (!giver) {
+      giver = "anonymous"
     }
     this.setState({
-      alias: nameValue,
+      alias: giver,
+      receiver: receiver
     })
   }
 
@@ -33,25 +38,21 @@ class App extends Component {
   render() {
 
     return (
-        <div class="container App">
-          <div class="section heading">
-            Shamehatting username!
+        <div class="container">
+          <div class="heading p-5">
+            You've been shamehatted!
           </div>
-          <div class="section">
-            <Giver />
-          </div>
-          <div class="section text-left">
+          {this.state.alias === null && <Receiver />}
+          {this.state.alias === null && <Giver /> }
+          {this.state.alias === null && 
             <Button value="Submit shamehat" onClick={() => this.handleSubmit() } />
-            <p />
-            <Button value="View leaderboard" onClick={() => this.handleLeaderboard() } />
-            <p />
-            {this.state.alias &&
-              <div class="alert alert-primary" role="alert">
-                Submitted shamehat for username by {this.state.alias}!
-              </div>
-            }
-          </div>
-        </div>
+          }
+          {this.state.alias &&
+            <div class="alert alert-primary" role="alert">
+              Submitted shamehat for {this.state.receiver} by {this.state.alias}!
+            </div>
+          }
+        </div> 
     );
   }
 }

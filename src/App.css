@@ -1,21 +1,13 @@
-html, body {
-  height: 100%;
-}
-
-#root {
-  height: 100%;
-}
-
-.App {
-  height: 100%;
-  display: table;
-  table-layout: fixed;
-}
-
 .heading {
   font-size: calc(10px + 5vmin);
-  min-height: 100vh;
+  text-align: center;
 }
+
+.section {
+    text-align: center;
+}
+
+/**********************************/
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -45,15 +37,4 @@ html, body {
   to {
     transform: rotate(360deg);
   }
-}
-
-.section {
-    text-align: center;
-    display: table-row;
-}
-
-.span {
-    height: 100%;
-    display: table-cell;
-  vertical-align: middle;
 }
