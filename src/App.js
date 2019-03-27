@@ -5,6 +5,7 @@ import './css/bootstrap-grid.css';
 
 import axios from 'axios'
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { Text } from 'office-ui-fabric-react/lib/Text';
 import Giver from './Giver.js'
 import Receiver from './Receiver.js'
 import Button from './Button.js'
@@ -18,15 +19,26 @@ class App extends Component {
     this.state = {
       giver: null,
       receiver: null,
-      time: null
+      time: null,
+      allReceivers: null
     };
+
+    axios.get('/receivers')
+      .then(json => this.setState({
+        giver: this.state.giver,
+        receiver: this.state.receiver,
+        time: this.state.time,
+        allReceivers: json.data
+      })
+    )
   }
 
   updateState(giver, receiver) {
     this.setState({
       giver: giver,
       receiver: receiver,
-      time: Date.now()
+      time: (new Date()).toISOString(),
+      allReceivers: this.state.allReceivers
     })  
   }
 
@@ -56,16 +68,6 @@ class App extends Component {
       {name: "Person 7", times: 15},
       {name: "Person 8", times: 10}
     ]
-    const receiverData = [
-      {id: 1, name: "Person 1", lastTime: 1553632625, times: 1},
-      {id: 2, name: "Person 2", lastTime: 1553632525, times: 30},
-      {id: 3, name: "Person 3", lastTime: 1553632615, times: 13},
-      {id: 4, name: "Person 4", lastTime: 1553532625, times: 21},
-      {id: 5, name: "Person 5", lastTime: 1553636999, times: 68},
-      {id: 6, name: "Person 6", lastTime: 1553234625, times: 90},
-      {id: 7, name: "Person 7", lastTime: 1553631235, times: 13},
-      {id: 8, name: "Person 8", lastTime: 1553635999, times: 2}
-    ]
 
     let heading;
     if (this.state.giver === null) {
@@ -75,16 +77,17 @@ class App extends Component {
     }
 
     return (
-        <div class="container">
-          <div class="heading p-5">{heading}</div>
+        <div className="container">
+          <div className="heading p-5">{heading}</div>
           {this.state.giver === null && 
-            <div class="row">
-              <div class="column section"><Receiver /></div>
-              <div class="column section"><Giver /></div>
+            <div>
+            <div className="row p-2">
+              <div className="column section"><Giver /></div>
+              <div className="column section"><Receiver /></div>
             </div>
-          }
-          {this.state.giver === null && 
-            <div class="p-4"><Button value="Submit shamehat" onClick={() => this.handleSubmit() } /></div>
+            <iframe id="graphqlFrame" title="Yammer Graphql iFrame" width="90%" height="50" src="https://www.yammer.com/graphql?" />
+            <div className="p-4"><Button value="Submit shamehat" onClick={() => this.handleSubmit() } /></div>
+            </div>
           }
           {this.state.giver && this.state.receiver === null &&
             <MessageBar messageBarType={MessageBarType.warning} isMultiline={false}>
@@ -101,13 +104,13 @@ class App extends Component {
             </div>
           }
 
-          <div class="row p-4">
-            <div class="column section">
-              <large>Top Shamehat Wearers</large>
-              <ReceiverTable data={receiverData}/>
+          <div className="row p-4">
+            <div className="column section">
+              <Text variant="xxLarge">Top Shamehat Wearers</Text>
+              <ReceiverTable data={this.state.allReceivers}/>
             </div>
-            <div class="column section">
-              <large>Top Shamehat Police</large>
+            <div className="column section">
+              <Text variant="xxLarge">Top Shamehat Police</Text>
               <GiverTable data={giverData}/>
             </div>
           </div>

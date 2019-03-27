@@ -5,6 +5,13 @@ import './css/bootstrap-grid.css';
 
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { DetailsList, DetailsListLayoutMode, SelectionMode, IColumn } from 'office-ui-fabric-react/lib/DetailsList';
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
+
+const columns: IColumn[] = [
+  { key: 'column1', name: 'Name',                  fieldName: 'name',        minWidth: 150, maxWidth: 300, isResizable: true },
+  { key: 'column2', name: 'Shamehats received',    fieldName: 'times',       minWidth: 150, maxWidth: 300, isResizable: true },
+  { key: 'column3', name: 'Last given a shamehat', fieldName: 'lastTimeAgo', minWidth: 150, maxWidth: 300, isResizable: true }
+]
 
 const times = [
 	{ type: "year", value: 60 * 60 * 24 * 365 },
@@ -32,36 +39,97 @@ function formatTime(secs){
   return timeAgo 
 }
 
-function compare(a, b){
-  return b.times - a.times; // most shamehats first
+function compareMostShamehats(a, b){
+  return b.times - a.times; 
 }
 
-function ReceiverTable(props) {
-  const columns: IColumn[] = [
-      { key: 'column1', name: 'Name',                  fieldName: 'name',        minWidth: 150, maxWidth: 300, isResizable: true },
-      { key: 'column2', name: 'Shamehats received',    fieldName: 'times',       minWidth: 150, maxWidth: 300, isResizable: true },
-      { key: 'column3', name: 'Last given a shamehat', fieldName: 'lastTimeAgo', minWidth: 150, maxWidth: 300, isResizable: true }
-    ]
+function compareMostRecent(a, b) {
+  return b.lastTime - a.lastTime
+}
 
-  var items = props.data.slice()
-  items.sort(compare)
-  const now = Math.floor((new Date()).getTime() / 1000)
-  for (var i = 0; i < items.length; i++) {
-    items[i].lastTimeAgo = formatTime(now - items[i].lastTime)
+class ReceiverTable extends Component {
+  constructor(props) {
+    super(props)
+    let data;
+    if (props.data === null) {
+      data = null
+    } else {
+      data = props.data.slice()
+      data.sort(compareMostShamehats)
+    }
+    this.state = {
+      data: data,
+      sortedByShamehat: true
+    }
   }
 
-  return(
-    <Fabric>
-      <DetailsList
-        items={items}
-        columns={columns}
-        setKey="set"
-        layoutMode={DetailsListLayoutMode.justified}
-        isHeaderVisible={true}
-        selectionMode={SelectionMode.none}
-      />
-    </Fabric>
-  )
+  componentDidUpdate(prevProps) {
+    if (this.props.data !== prevProps.data) {
+      var data = this.props.data.slice()
+      data.sort(compareMostShamehats)
+      this.setState({ 
+        data: data,
+        sortedByShamehat: true
+      })
+    }
+  }
+
+  onColumnClick(column) {
+    var items = this.state.data.slice()
+    if (column.key === "column2") {
+      items.sort(compareMostShamehats)
+      this.setState({ 
+        data: items,
+        sortedByShamehat: true 
+      })
+    } else if (column.key === "column3") {
+      items.sort(compareMostRecent)
+      this.setState({ 
+        data: items,
+        sortedByShamehat: false 
+      })
+    }
+  }
+
+  onFilterChanged(text) {
+    var items = this.props.data.slice()
+    if (this.state.sortedByShamehat) {
+      items.sort(compareMostShamehats)
+    } else {
+      items.sort(compareMostRecent)
+    }
+    this.setState({
+      data: text ? items.filter(item => item.name.toLowerCase().indexOf(text.toLowerCase()) >= 0) : items,
+      sortedByShamehat: this.state.sortedByShamehat
+    });
+  }
+
+  render() {
+    if (this.state.data === null) {
+      return(<div><p />Loading</div>)
+    }
+
+    var items = this.state.data.slice()
+    const now = Math.floor((new Date()).getTime() / 1000)
+    for (var i = 0; i < items.length; i++) {
+      items[i].lastTimeAgo = formatTime(now - Math.floor(items[i].lastTime / 1000))
+    }
+
+    return(
+      <Fabric>
+        <TextField label="Filter by name" onBeforeChange={ (text) => this.onFilterChanged(text) } />
+        <DetailsList
+          items={items}
+          columns={columns}
+          setKey="set"
+          layoutMode={DetailsListLayoutMode.justified}
+          isHeaderVisible={true}
+          selectionMode={SelectionMode.none}
+          onColumnHeaderClick={(ev, column) => this.onColumnClick(column)}
+        />
+      </Fabric>
+    )
+  }
 }
 
 export default ReceiverTable

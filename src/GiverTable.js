@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import './css/bootstrap.css';
 import './css/bootstrap-grid.css';
