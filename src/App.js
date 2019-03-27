@@ -39,7 +39,7 @@ class App extends Component {
 
     axios.get('/user', {
       params: {
-        token: receiverToken
+        token: "Bearer " + receiverToken
       }
     }).then(json => this.updateState(giver, json.data.full_name))
 
@@ -66,11 +66,17 @@ class App extends Component {
       {id: 7, name: "Person 7", lastTime: 1553631235, times: 13},
       {id: 8, name: "Person 8", lastTime: 1553635999, times: 2}
     ]
+
+    let heading;
+    if (this.state.giver === null) {
+      heading = "It's time to shamehat!"
+    } else {
+      heading = "You've been given a shamehat!"
+    }
+
     return (
         <div class="container">
-          <div class="heading p-5">
-            You've been shamehatted!
-          </div>
+          <div class="heading p-5">{heading}</div>
           {this.state.giver === null && 
             <div class="row">
               <div class="column section"><Receiver /></div>
@@ -87,10 +93,11 @@ class App extends Component {
           }
           {this.state.giver && this.state.receiver && 
             <div>
-            <MessageBar messageBarType={MessageBarType.success} isMultiline={false}>
-              Submitted shamehat for {this.state.receiver} by {this.state.alias} at {this.state.time}!
-            </MessageBar>
-            <ShameGif />
+              <ShameGif />
+              <p />
+              <MessageBar messageBarType={MessageBarType.success} isMultiline={false}>
+                Submitted shamehat for {this.state.receiver} by {this.state.giver} at {this.state.time}!
+              </MessageBar>
             </div>
           }
 
