@@ -10,6 +10,7 @@ import Receiver from './Receiver.js'
 import Button from './Button.js'
 import ReceiverTable from './ReceiverTable.js'
 import GiverTable from './GiverTable.js'
+import ShameGif from './ShameGif.js'
 
 class App extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class App extends Component {
     this.setState({
       giver: giver,
       receiver: receiver,
-      time: Math.floor((new Date()).getTime() / 1000)
+      time: Date.now()
     })  
   }
 
@@ -85,9 +86,12 @@ class App extends Component {
             </MessageBar>
           }
           {this.state.giver && this.state.receiver && 
+            <div>
             <MessageBar messageBarType={MessageBarType.success} isMultiline={false}>
               Submitted shamehat for {this.state.receiver} by {this.state.alias} at {this.state.time}!
             </MessageBar>
+            <ShameGif />
+            </div>
           }
 
           <div class="row p-4">
@@ -100,7 +104,6 @@ class App extends Component {
               <GiverTable data={giverData}/>
             </div>
           </div>
-          <p />
         </div> 
     );
   }

@@ -9,7 +9,7 @@ function Receiver(props) {
         id="receiver-auth"
         label="Enter your victim's auth token" 
         placeholder="Bearer 107-xxxxxxxxxxxxxxxxxxxxx" 
-        description="Go to Yammer to take their auth token"
+        description="Go to <a href=https://www.yammer.com/graphql>Yammer GraphQL</a> to take their auth token"
       />
     </form>
   );  
