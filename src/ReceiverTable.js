@@ -6,11 +6,13 @@ import './css/bootstrap-grid.css';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { DetailsList, DetailsListLayoutMode, SelectionMode, IColumn } from 'office-ui-fabric-react/lib/DetailsList';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import { Image } from 'office-ui-fabric-react/lib/Image';
 
 const columns: IColumn[] = [
-  { key: 'column1', name: 'Name',                  fieldName: 'name',        minWidth: 150, maxWidth: 300, isResizable: true },
-  { key: 'column2', name: 'Shamehats received',    fieldName: 'times',       minWidth: 150, maxWidth: 300, isResizable: true },
-  { key: 'column3', name: 'Last given a shamehat', fieldName: 'lastTimeAgo', minWidth: 150, maxWidth: 300, isResizable: true }
+  { key: 'column0', name: '',                      fieldName: 'mugshotUrl',  minWidth: 36,  maxWidth: 36,  isResizable: false },
+  { key: 'column1', name: 'Name',                  fieldName: 'name',        minWidth: 150, maxWidth: 300, isResizable: true  },
+  { key: 'column2', name: 'Shamehats received',    fieldName: 'times',       minWidth: 140, maxWidth: 300, isResizable: true  },
+  { key: 'column3', name: 'Last given a shamehat', fieldName: 'lastTimeAgo', minWidth: 150, maxWidth: 300, isResizable: true  }
 ]
 
 const times = [
@@ -104,6 +106,16 @@ class ReceiverTable extends Component {
     });
   }
 
+  renderItemColumn(item: Object, column: IColumn) {
+    const content = item[column.fieldName];
+
+    if (column.fieldName === "mugshotUrl") {
+        return <Image src={content} width={36} height={36} />;
+    } else {
+        return <span>{content}</span>;
+    }
+  }
+
   render() {
     if (this.state.data === null) {
       return(<div><p />Loading</div>)
@@ -123,6 +135,7 @@ class ReceiverTable extends Component {
           columns={columns}
           setKey="set"
           layoutMode={DetailsListLayoutMode.justified}
+          onRenderItemColumn={ (item, index, column) => this.renderItemColumn(item, column) }
           isHeaderVisible={true}
           selectionMode={SelectionMode.none}
           onColumnHeaderClick={(ev, column) => this.onColumnClick(column)}

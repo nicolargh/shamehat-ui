@@ -3,9 +3,23 @@
   text-align: center;
 }
 
-.section {
-  min-width: 50vh;
-  padding: 0vh 5vh;
+.giver-section {
+  width: 50vh;
+  padding: 0vh 3vh;
+}
+
+.receiver-section {
+  width: 65vh;
+  padding: 0vh 3vh;
+}
+
+.image-114 {
+  border-radius: 18px
+}
+
+.ms-Button-label {
+  font-size: 24px;
+  padding: 10px;
 }
 
 /**********************************/

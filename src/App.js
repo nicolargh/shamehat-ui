@@ -82,8 +82,8 @@ class App extends Component {
           {this.state.giver === null && 
             <div>
             <div className="row p-2">
-              <div className="column section"><Giver /></div>
-              <div className="column section"><Receiver /></div>
+              <div className="column giver-section"><Giver /></div>
+              <div className="column receiver-section"><Receiver /></div>
             </div>
             <iframe id="graphqlFrame" title="Yammer Graphql iFrame" width="100%" height="50" src="https://www.yammer.com/graphql?" />
             <div className="p-4"><Button value="Submit shamehat" onClick={() => this.handleSubmit() } /></div>
@@ -105,11 +105,11 @@ class App extends Component {
           }
 
           <div className="row p-2">
-            <div className="column section">
+            <div className="column giver-section">
               <Text variant="xxLarge">Top Shamehat Police</Text>
               <GiverTable data={giverData}/>
             </div>
-            <div className="column section">
+            <div className="column receiver-section">
               <Text variant="xxLarge">Top Shamehat Wearers</Text>
               <ReceiverTable data={this.state.allReceivers}/>
             </div>
