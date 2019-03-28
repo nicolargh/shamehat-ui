@@ -21,11 +21,25 @@ class GiverTable extends Component {
   constructor(props) {
     super(props)
 
-    var items = props.data.slice()
-    items.sort(compare)
-
+    let data;
+    if (props.data === null) {
+      data = null
+    } else {
+      data = props.data.slice()
+      data.sort(compare)
+    }
     this.state = {
-      data: items
+      data: data
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.data !== prevProps.data) {
+      var data = this.props.data.slice()
+      data.sort(compare)
+      this.setState({ 
+        data: data
+      })
     }
   }
 
@@ -39,6 +53,10 @@ class GiverTable extends Component {
   }
 
   render() {
+    if (this.state.data === null) {
+      return(<div><p />Loading</div>)
+    }
+
     return(
       <Fabric>
         <TextField label="Filter by name" onBeforeChange={ (text) => this.onFilterChanged(text) } />

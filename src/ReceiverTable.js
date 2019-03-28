@@ -123,10 +123,13 @@ class ReceiverTable extends Component {
 
     var items = this.state.data.slice()
     const now = Math.floor((new Date()).getTime() / 1000)
+    var count = 0
     for (var i = 0; i < items.length; i++) {
       items[i].lastTimeAgo = formatTime(now - Math.floor(items[i].lastTime / 1000))
+      count += items[i].times
     }
 
+    console.log(count)
     return(
       <Fabric>
         <TextField label="Filter by name" onBeforeChange={ (text) => this.onFilterChanged(text) } />

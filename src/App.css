@@ -13,13 +13,22 @@
   padding: 0vh 3vh;
 }
 
-.image-114 {
+.yammer-message {
+  width: 65vh;
+  align-items: center;
+}
+
+.image-117 {
   border-radius: 18px
 }
 
 .ms-Button-label {
   font-size: 24px;
   padding: 10px;
+}
+
+.submit-button {
+  padding: 5vh 3vh 15vh 3vh;
 }
 
 /**********************************/
