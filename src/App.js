@@ -33,12 +33,12 @@ class App extends Component {
     )
   }
 
-  updateState(giver, receiver) {
+  updateState(giver, receiver, allReceivers) {
     this.setState({
       giver: giver,
       receiver: receiver,
       time: (new Date()).toISOString(),
-      allReceivers: this.state.allReceivers
+      allReceivers: allReceivers ? allReceivers : this.state.allReceivers
     })  
   }
 
@@ -53,7 +53,7 @@ class App extends Component {
       params: {
         token: "Bearer " + receiverToken
       }
-    }).then(json => this.updateState(giver, json.data.full_name))
+    }).then(json => this.updateState(giver, json.data.full_name, json.data.data))
 
   }
 
@@ -85,7 +85,7 @@ class App extends Component {
               <div className="column section"><Giver /></div>
               <div className="column section"><Receiver /></div>
             </div>
-            <iframe id="graphqlFrame" title="Yammer Graphql iFrame" width="90%" height="50" src="https://www.yammer.com/graphql?" />
+            <iframe id="graphqlFrame" title="Yammer Graphql iFrame" width="100%" height="50" src="https://www.yammer.com/graphql?" />
             <div className="p-4"><Button value="Submit shamehat" onClick={() => this.handleSubmit() } /></div>
             </div>
           }
@@ -104,14 +104,14 @@ class App extends Component {
             </div>
           }
 
-          <div className="row p-4">
-            <div className="column section">
-              <Text variant="xxLarge">Top Shamehat Wearers</Text>
-              <ReceiverTable data={this.state.allReceivers}/>
-            </div>
+          <div className="row p-2">
             <div className="column section">
               <Text variant="xxLarge">Top Shamehat Police</Text>
               <GiverTable data={giverData}/>
+            </div>
+            <div className="column section">
+              <Text variant="xxLarge">Top Shamehat Wearers</Text>
+              <ReceiverTable data={this.state.allReceivers}/>
             </div>
           </div>
         </div> 
